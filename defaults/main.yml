@@ -1,7 +1,4 @@
 ---
-# Script deployment path
-rpi_monitor_script: /usr/local/sbin/raspi-monitor.sh
-
 # The name of the service to be restarted
 zabbix_agent_service: zabbix-agent
 
