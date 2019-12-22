@@ -5,8 +5,17 @@ zabbix_agent_service: zabbix-agent
 # Name of the Zabbix Agent package in repository 
 zabbix_agent_package: zabbix-agent
 
+# Directory where Zabbix agent configuration is stored
+zabbix_config_dir: /etc/zabbix
+
 # Where is Zabbix Agent config is located at
-zabbix_agent_config: /etc/zabbix/zabbix_agentd.conf
+zabbix_agent_config: "{{ zabbix_config_dir }}/zabbix_agentd.conf"
+
+# Enable Zabbix agent PSK encryption
+zabbix_agent_psk_enabled: True
+
+# Where is Zabbix Agent config is located at
+zabbix_agent_psk: "{{ zabbix_config_dir }}/zabbix_agentd.psk"
 
 # Hostname of the server where Zabbix Agent is running (configured in Zabbix Server)
 zabbix_agent_hostname: "{{ inventory_hostname }}"

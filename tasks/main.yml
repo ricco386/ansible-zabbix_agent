@@ -13,4 +13,41 @@
     - install
     - zabbix-agent
 
+- name: Check if PSK key exists
+  stat: path={{ zabbix_agent_psk }}
+  register: psk_key
+  when: zabbix_agent_psk_enabled | bool == true
+  tags:
+    - install
+    - zabbix-agent
+    - psk_encryption
+
+- name: Generate new PSK key
+  shell: "openssl rand -hex 32 > {{ zabbix_agent_psk }}"
+  when:
+    - zabbix_agent_psk_enabled | bool == true
+    - not psk_key.stat.exists
+  become: true
+  become_user: root
+  tags:
+    - install
+    - zabbix-agent
+    - psk_encryption
+
+- name: Set PSK file permissions
+  file: path={{ zabbix_agent_psk }}
+        owner=zabbix
+        group=root
+        mode=640
+  when:
+    - zabbix_agent_psk_enabled | bool == true
+    - not psk_key.stat.exists
+  become: true
+  become_user: root
+  tags:
+    - install
+    - zabbix-agent
+    - psk_encryption
+
+
 - import_tasks: zabbix-config.yml

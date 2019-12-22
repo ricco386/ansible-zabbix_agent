@@ -51,6 +51,66 @@
     - configure
     - zabbix-agent
 
+- name: Set "TLSConnect" to PSK in zabbix-agent config
+  lineinfile:
+    dest: "{{ zabbix_agent_config }}"
+    regexp: "^TLSConnect="
+    insertafter: '^# TLSConnect='
+    line: "TLSConnect=psk"
+  become: true
+  become_user: root
+  notify: "restart zabbix-agent"
+  when: zabbix_agent_psk_enabled | bool == true
+  tags:
+    - configure
+    - zabbix-agent
+    - psk_encryption
+
+- name: Set "TLSAccept" to PSK in zabbix-agent config
+  lineinfile:
+    dest: "{{ zabbix_agent_config }}"
+    regexp: "^TLSAccept="
+    insertafter: '^# TLSAccept='
+    line: "TLSAccept=psk"
+  become: true
+  become_user: root
+  notify: "restart zabbix-agent"
+  when: zabbix_agent_psk_enabled | bool == true
+  tags:
+    - configure
+    - zabbix-agent
+    - psk_encryption
+
+- name: Set "TLSPSKFile" in zabbix-agent config
+  lineinfile:
+    dest: "{{ zabbix_agent_config }}"
+    regexp: "^TLSPSKFile="
+    insertafter: '^# TLSPSKFile='
+    line: "TLSPSKFile={{ zabbix_agent_psk }}"
+  become: true
+  become_user: root
+  notify: "restart zabbix-agent"
+  when: zabbix_agent_psk_enabled | bool == true
+  tags:
+    - configure
+    - zabbix-agent
+    - psk_encryption
+
+- name: Set "TLSPSKIdentity" in zabbix-agent config
+  lineinfile:
+    dest: "{{ zabbix_agent_config }}"
+    regexp: "^TLSPSKIdentity="
+    insertafter: '^# TLSPSKIdentity='
+    line: "TLSPSKIdentity=PSK {{ zabbix_agent_hostname }}"
+  become: true
+  become_user: root
+  notify: "restart zabbix-agent"
+  when: zabbix_agent_psk_enabled | bool == true
+  tags:
+    - configure
+    - zabbix-agent
+    - psk_encryption
+
 - name: Set "UserParamater" in zabbix-agent config
   lineinfile:
     dest: "{{ zabbix_agent_config }}"
