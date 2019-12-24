@@ -37,7 +37,7 @@
 - name: Set PSK file permissions
   file: path={{ zabbix_agent_psk }}
         owner=zabbix
-        group=root
+        group=users
         mode=640
   when:
     - zabbix_agent_psk_enabled | bool == true
